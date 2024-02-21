@@ -16,7 +16,7 @@ const GardenPage = () => {
     <div>
       Garden Page
     </div>
-  )
+  );
 };
 
 export default GardenPage;
