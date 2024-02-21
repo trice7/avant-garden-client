@@ -1,5 +1,6 @@
 import { Button, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 
 const GardenCard = ({ garden }) => {
   console.warn('garden card');
@@ -9,7 +10,9 @@ const GardenCard = ({ garden }) => {
       <Card.Img variant="top" src={garden.image} />
       <Card.Body>
         <Card.Text>{garden.name}</Card.Text>
-        <Button>View</Button>
+        <Link passHref href={`/gardens/${garden.id}`}>
+          <Button>View</Button>
+        </Link>
       </Card.Body>
     </Card>
   );
