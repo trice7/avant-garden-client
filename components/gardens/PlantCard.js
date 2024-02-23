@@ -1,5 +1,6 @@
-import { Button, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import PlantDetail from './PlantDetails';
 
 const PlantCard = ({ plant, quantity }) => (
   <Card style={{ width: '18rem' }}>
@@ -7,7 +8,7 @@ const PlantCard = ({ plant, quantity }) => (
     <Card.Body>
       <Card.Text><h3>{plant.name}</h3></Card.Text>
       {quantity ? (<p>{quantity}</p>) : ''}
-      <Button>Button</Button>
+      <PlantDetail plant={plant} />
     </Card.Body>
   </Card>
 );
