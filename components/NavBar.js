@@ -26,6 +26,9 @@ export default function NavBar() {
             <Link passHref href="/gardens">
               <Nav.Link>My Gardens</Nav.Link>
             </Link>
+            <Link passHref href="/gardens/new">
+              <Nav.Link>Create Garden</Nav.Link>
+            </Link>
             <Link passHref href="/plants">
               <Nav.Link>Plant Compendium</Nav.Link>
             </Link>
