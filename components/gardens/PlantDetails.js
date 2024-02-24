@@ -3,21 +3,57 @@ import { Card, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { useRouter } from 'next/router';
+import { useAuth } from '../../utils/context/authContext';
 import { getUserGardens } from '../../api/gardenData';
+import { createGardenPlant } from '../../api/gardenPlantData';
 
-function PlantDetail({ plant, quantity }) {
+const initialState = {
+  garden: '',
+  plant: '',
+  quantity: 1,
+};
+
+function PlantDetail({
+  plant,
+  plantQuantity,
+  gardenName,
+  gardenId,
+}) {
   const [show, setShow] = useState(false);
   const [gardens, setGardens] = useState([]);
+  const [formInput, setFormInput] = useState(initialState);
 
-  console.warn(quantity);
-  console.warn(gardens);
+  const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
-    getUserGardens().then(setGardens);
-  }, []);
+    getUserGardens(user.uid).then(setGardens);
+    setFormInput((prevState) => ({ ...prevState, plant: plant.id }));
+    if (gardenId) {
+      setFormInput((prevState) => ({
+        ...prevState,
+        quantity: Number(plantQuantity),
+        garden: gardenId,
+      }));
+    }
+  }, [user.uid, plant.id, gardenId, plantQuantity]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createGardenPlant(formInput).then(() => router.push('/gardens'));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormInput((prevState) => ({
+      ...prevState,
+      [name]: Number(value),
+    }));
+  };
 
   return (
     <>
@@ -46,12 +82,29 @@ function PlantDetail({ plant, quantity }) {
             </Card.Body>
           </Card>
         </Modal.Body>
-        <Form>
+        <Form onSubmit={handleSubmit}>
+
+          <Form.Group className="mb-3">
+            <Form.Label sm="2">Garden:</Form.Label>
+            {gardenName ? ` ${gardenName}` : (
+              <Form.Select name="garden" onChange={handleChange} value={formInput.garden || ''} required>
+                <option value="">Add to a Garden</option>
+                {gardens?.map((garden) => (
+                  <option key={garden.id} value={garden.id}>{garden.name}</option>
+                ))}
+              </Form.Select>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Quantity</Form.Label>
+            <Form.Control name="quantity" value={formInput.quantity} type="number" onChange={handleChange} />
+          </Form.Group>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary">Understood</Button>
+            <Button type="submit" variant="primary">Submit</Button>
           </Modal.Footer>
         </Form>
       </Modal>
@@ -65,16 +118,21 @@ PlantDetail.propTypes = {
     image: PropTypes.string,
     description: PropTypes.string,
     notes: PropTypes.string,
+    id: PropTypes.number,
     type: PropTypes.shape({
       label: PropTypes.string,
     }),
     grow_time: PropTypes.string,
   }).isRequired,
-  quantity: PropTypes.number,
+  plantQuantity: PropTypes.number,
+  gardenName: PropTypes.string,
+  gardenId: PropTypes.number,
 };
 
 PlantDetail.defaultProps = {
-  quantity: '',
+  plantQuantity: '',
+  gardenName: '',
+  gardenId: '',
 };
 
 export default PlantDetail;
