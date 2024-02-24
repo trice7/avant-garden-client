@@ -11,9 +11,6 @@ const ViewGarden = () => {
 
   useEffect(() => {
     getSingleGarden(id).then(setGarden);
-    // getSingleGarden(id).then((data) => {
-    //   console.warn(data);
-    // });
   }, [id]);
 
   return (
@@ -22,7 +19,7 @@ const ViewGarden = () => {
 
       {garden.plants?.map((obj) => (
         <section key={obj.id}>
-          <PlantCard plant={obj.plant} quantity={obj.quantity} />
+          <PlantCard plant={obj.plant} quantity={obj.quantity} garden={garden} />
         </section>
       ))}
     </div>
