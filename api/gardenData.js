@@ -51,8 +51,8 @@ const createGarden = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const updateGarden = (payload, id) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/gardens/${id}`, {
+const updateGarden = (payload) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/gardens/${payload.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
