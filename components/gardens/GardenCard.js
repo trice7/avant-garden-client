@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { deleteGarden } from '../../api/gardenData';
 
 const GardenCard = ({ garden, onUpdate }) => {
-  console.warn('placeholder');
   const handleDelete = () => {
     if (window.confirm('Delete this garden? This action is irreversible')) {
       deleteGarden(garden.id).then(onUpdate);

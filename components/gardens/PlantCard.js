@@ -21,7 +21,7 @@ const PlantCard = ({
     <Card style={{ width: '18rem' }}>
       <Card.Img variant="top" src={plant.image} />
       <Card.Body>
-        <Card.Text><h3>{plant.name}</h3></Card.Text>
+        <Card.Text>{plant.name}</Card.Text>
         {quantity ? (<p>{quantity}</p>) : ''}
         <PlantDetail plant={plant} plantQuantity={quantity} gardenName={garden.name} gardenId={garden.id} gardenPlantId={gardenPlantId} />
         {gardenPlantId ? (<Button onClick={handleDelete} variant="danger">Delete</Button>) : ''}
@@ -31,13 +31,28 @@ const PlantCard = ({
 };
 
 PlantCard.propTypes = {
-  quantity: PropTypes.number,
-  gardenPlantId: PropTypes.number,
-  setChange: PropTypes.func,
-  garden: PropTypes.shape({
-    name: PropTypes.string,
-    id: PropTypes.number,
-  }),
+  quantity: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  gardenPlantId: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  setChange: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.string,
+  ]),
+  garden: PropTypes.oneOfType([
+    PropTypes.shape({
+      name: PropTypes.string,
+      id: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+      ]),
+    }),
+    PropTypes.string,
+  ]),
   plant: PropTypes.shape({
     image: PropTypes.string,
     name: PropTypes.string,
