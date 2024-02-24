@@ -10,6 +10,9 @@ const GardenCard = ({ garden }) => (
       <Link passHref href={`/gardens/${garden.id}`}>
         <Button>View</Button>
       </Link>
+      <Link passHref href={`/gardens/edit/${garden.id}`}>
+        <Button>Edit</Button>
+      </Link>
     </Card.Body>
   </Card>
 );

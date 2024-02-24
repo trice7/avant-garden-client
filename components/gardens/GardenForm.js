@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Button, Form } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../utils/context/authContext';
-import { createGarden } from '../../api/gardenData';
+import { createGarden, updateGarden } from '../../api/gardenData';
 
 const initialState = {
   name: '',
@@ -25,7 +25,7 @@ const GardenForm = ({ garden }) => {
     if (garden) {
       setFormInput(garden);
     }
-  }, []);
+  }, [garden]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,7 +39,14 @@ const GardenForm = ({ garden }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (garden) {
-      console.warn('edit submitted');
+      const payload = {};
+      payload.id = formInput.id;
+      payload.name = formInput.name;
+      payload.image = formInput.image;
+      payload.uid = formInput.user.uid;
+      payload.public = formInput.public;
+
+      updateGarden(payload).then(() => router.push('/gardens'));
     } else {
       formInput.uid = user.uid;
       createGarden(formInput).then(() => router.push('/gardens'));
@@ -67,10 +74,10 @@ const GardenForm = ({ garden }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <h2>Create a Garden</h2>
+      <h2>{garden ? 'Update' : 'Create'} a Garden</h2>
       <Form.Group className="mb-3" controlId="formName">
         <Form.Label>Name</Form.Label>
-        <Form.Control name="name" value={formInput.name} onChange={handleChange} required placeholder="Enter a name for your garden" />
+        <Form.Control name="name" value={formInput.name} onChange={handleChange} placeholder="Enter a name for your garden" />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formImage">
