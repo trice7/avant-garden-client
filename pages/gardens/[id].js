@@ -19,7 +19,7 @@ const ViewGarden = () => {
 
       {garden.plants?.map((obj) => (
         <section key={obj.id}>
-          <PlantCard plant={obj.plant} quantity={obj.quantity} garden={garden} />
+          <PlantCard plant={obj.plant} quantity={obj.quantity} gardenPlantId={obj.id} garden={garden} />
         </section>
       ))}
     </div>

@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../utils/context/authContext';
 import { getUserGardens } from '../../api/gardenData';
-import { createGardenPlant } from '../../api/gardenPlantData';
+import { createGardenPlant, updateGardenPlant } from '../../api/gardenPlantData';
 
 const initialState = {
   garden: '',
@@ -19,6 +19,7 @@ function PlantDetail({
   plantQuantity,
   gardenName,
   gardenId,
+  gardenPlantId,
 }) {
   const [show, setShow] = useState(false);
   const [gardens, setGardens] = useState([]);
@@ -44,7 +45,16 @@ function PlantDetail({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createGardenPlant(formInput).then(() => router.push('/gardens'));
+    if (gardenId) {
+      const payload = {
+        ...formInput,
+        id: gardenPlantId,
+      };
+      updateGardenPlant(payload).then(() => router.push('/gardens'));
+      console.warn(payload);
+    } else {
+      createGardenPlant(formInput).then(() => router.push('/gardens'));
+    }
   };
 
   const handleChange = (e) => {
@@ -104,7 +114,7 @@ function PlantDetail({
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button type="submit" variant="primary">Submit</Button>
+            <Button type="submit" variant="primary">{gardenId ? 'Update' : 'Add'} plant</Button>
           </Modal.Footer>
         </Form>
       </Modal>
@@ -127,12 +137,14 @@ PlantDetail.propTypes = {
   plantQuantity: PropTypes.number,
   gardenName: PropTypes.string,
   gardenId: PropTypes.number,
+  gardenPlantId: PropTypes.number,
 };
 
 PlantDetail.defaultProps = {
   plantQuantity: '',
   gardenName: '',
   gardenId: '',
+  gardenPlantId: '',
 };
 
 export default PlantDetail;
