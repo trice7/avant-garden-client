@@ -6,12 +6,13 @@ import PlantCard from '../../components/gardens/PlantCard';
 const ViewGarden = () => {
   const router = useRouter();
   const [garden, setGarden] = useState({});
+  const [change, setChange] = useState(true);
 
   const { id } = router.query;
 
   useEffect(() => {
     getSingleGarden(id).then(setGarden);
-  }, [id]);
+  }, [id, change]);
 
   return (
     <div>
@@ -19,7 +20,7 @@ const ViewGarden = () => {
 
       {garden.plants?.map((obj) => (
         <section key={obj.id}>
-          <PlantCard plant={obj.plant} quantity={obj.quantity} gardenPlantId={obj.id} garden={garden} />
+          <PlantCard plant={obj.plant} quantity={obj.quantity} gardenPlantId={obj.id} garden={garden} setChange={setChange} />
         </section>
       ))}
     </div>
