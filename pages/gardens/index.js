@@ -10,7 +10,6 @@ const GardenPage = () => {
   const { user } = useAuth();
 
   const loadGardens = () => {
-    // TODO: create promises and then make a GET request for gardens
     getUserGardens(user.uid).then(setGardens);
   };
 

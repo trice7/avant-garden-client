@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { getSingleGarden } from '../../api/gardenData';
 import PlantCard from '../../components/gardens/PlantCard';
+import Comment from '../../components/Comment';
 
 const ViewGarden = () => {
   const router = useRouter();
@@ -21,6 +22,14 @@ const ViewGarden = () => {
       {garden.plants?.map((obj) => (
         <section key={obj.id}>
           <PlantCard plant={obj.plant} quantity={obj.quantity} gardenPlantId={obj.id} garden={garden} setChange={setChange} />
+        </section>
+      ))}
+
+      <h2>Comments:</h2>
+
+      {garden.comments?.map((comment) => (
+        <section key={comment.id}>
+          <Comment comment={comment} />
         </section>
       ))}
     </div>
