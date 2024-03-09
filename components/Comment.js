@@ -1,13 +1,18 @@
 import { Button, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useAuth } from '../utils/context/authContext';
+import { deleteComment } from '../api/commentData';
 
-const Comment = ({ comment }) => {
-  const handleDelete = () => {
-    console.warn(comment);
-  };
-
+const Comment = ({ comment, setChange }) => {
   const { user } = useAuth();
+
+  const handleDelete = () => {
+    if (window.confirm('Delete this comment?')) {
+      deleteComment(comment.id).then(() => {
+        setChange((prevState) => !prevState);
+      });
+    }
+  };
 
   return (
     <Card style={{ width: '24rem' }}>
@@ -17,7 +22,7 @@ const Comment = ({ comment }) => {
         <Card.Text>
           {comment.content}
         </Card.Text>
-        <Button onClick={handleDelete}>Delete</Button>
+        {comment.user?.uid === user.uid ? (<Button onClick={handleDelete}>Delete</Button>) : ''}
       </Card.Body>
     </Card>
   );
@@ -29,9 +34,11 @@ Comment.propTypes = {
       username: PropTypes.string,
       uid: PropTypes.string,
     }),
+    id: PropTypes.number,
     date: PropTypes.string,
     content: PropTypes.string,
   }).isRequired,
+  setChange: PropTypes.func.isRequired,
 };
 
 export default Comment;

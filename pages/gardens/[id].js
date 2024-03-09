@@ -65,7 +65,7 @@ const ViewGarden = () => {
 
       {garden.comments?.map((comment) => (
         <section key={comment.id}>
-          <Comment comment={comment} />
+          <Comment comment={comment} setChange={setChange} />
         </section>
       ))}
     </div>

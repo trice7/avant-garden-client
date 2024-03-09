@@ -28,7 +28,19 @@ const updateComment = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const deleteComment = (id) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/comments/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
 export {
   createComment,
   updateComment,
+  deleteComment,
 };
