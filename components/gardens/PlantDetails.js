@@ -51,7 +51,6 @@ function PlantDetail({
         id: gardenPlantId,
       };
       updateGardenPlant(payload).then(() => router.push('/gardens'));
-      console.warn(payload);
     } else {
       createGardenPlant(formInput).then(() => router.push('/gardens'));
     }
@@ -128,16 +127,31 @@ PlantDetail.propTypes = {
     image: PropTypes.string,
     description: PropTypes.string,
     notes: PropTypes.string,
-    id: PropTypes.number,
-    type: PropTypes.shape({
-      label: PropTypes.string,
-    }),
+    id: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
+    type: PropTypes.oneOfType([
+      PropTypes.shape({
+        label: PropTypes.string,
+      }),
+      PropTypes.number,
+    ]),
     grow_time: PropTypes.string,
   }).isRequired,
-  plantQuantity: PropTypes.number,
+  plantQuantity: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
   gardenName: PropTypes.string,
-  gardenId: PropTypes.number,
-  gardenPlantId: PropTypes.number,
+  gardenId: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  gardenPlantId: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
 };
 
 PlantDetail.defaultProps = {

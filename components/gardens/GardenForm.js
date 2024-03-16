@@ -20,16 +20,16 @@ const GardenForm = ({ garden }) => {
   const router = useRouter();
 
   useEffect(() => {
-    console.warn(formInput);
-
     if (garden) {
-      setFormInput(garden);
+      setFormInput(() => ({
+        ...garden,
+        uid: garden.user?.uid,
+      }));
     }
   }, [garden]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.warn(formInput);
     setFormInput((prevState) => ({
       ...prevState,
       [name]: value,
@@ -53,70 +53,39 @@ const GardenForm = ({ garden }) => {
     }
   };
 
-  // const boolConversion = (value) => {
-  //   if (value === 'true') {
-  //     return true;
-  //   }
-  //   if (value === 'false') {
-  //     return false;
-  //   }
-  //   return value;
-  // };
-
-  // const handleRadioChange = (e) => {
-  //   const bool = boolConversion(e.target.value);
-  //   // boolConversion(e.target.value);
-  //   setFormInput((prevState) => ({
-  //     ...prevState,
-  //     public: bool,
-  //   }));
-  // };
-
   return (
     <Form onSubmit={handleSubmit}>
       <h2>{garden ? 'Update' : 'Create'} a Garden</h2>
       <Form.Group className="mb-3" controlId="formName">
         <Form.Label>Name</Form.Label>
-        <Form.Control name="name" value={formInput.name} onChange={handleChange} placeholder="Enter a name for your garden" />
+        <Form.Control name="name" value={formInput.name || ''} onChange={handleChange} placeholder="Enter a name for your garden" />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formImage">
         <Form.Label>Image</Form.Label>
-        <Form.Control name="image" value={formInput.image} onChange={handleChange} placeholder="Enter an imageURL for your garden" />
+        <Form.Control name="image" value={formInput.image || ''} onChange={handleChange} placeholder="Enter an imageURL for your garden" />
       </Form.Group>
-      {/* <Form.Group className="mb-3" onChange={handleRadioChange} required>
-        <div className="mb-3">
-          <Form.Check // prettier-ignore
-            type="radio"
-            id="test Check"
-            label="False"
-            for="privacy-radio"
-            name="public"
-            value="false"
-          />
-
-          <Form.Check
-            type="radio"
-            label="False"
-            id="True"
-            for="privacy-radio"
-            name="public"
-            value="true"
-          />
-        </div>
-      </Form.Group> */}
-
       <Button type="submit">Submit</Button>
     </Form>
   );
 };
 
 GardenForm.propTypes = {
-  garden: PropTypes.shape({
-    name: PropTypes.string,
-    image: PropTypes.string,
-    public: PropTypes.bool,
-  }).isRequired,
+  garden: PropTypes.oneOfType([
+    PropTypes.shape({
+      name: PropTypes.string,
+      image: PropTypes.string,
+      public: PropTypes.bool,
+      user: PropTypes.shape({
+        uid: PropTypes.string,
+      }),
+    }),
+    PropTypes.string,
+  ]),
+};
+
+GardenForm.defaultProps = {
+  garden: '',
 };
 
 export default GardenForm;
