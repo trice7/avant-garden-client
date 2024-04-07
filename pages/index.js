@@ -1,4 +1,4 @@
-import { Button } from 'react-bootstrap';
+import { Button, Image } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
 
@@ -15,7 +15,8 @@ function Home() {
       }}
     >
       <h1>Hello {user.fbUser.displayName}! </h1>
-      <p>Click the button below to logout!</p>
+      <p>Welcome to Avant Garden!</p>
+      <Image src="https://i.imgur.com/iCGIFOn.jpeg" roundedCircle />
       <Button variant="danger" type="button" size="lg" className="copy-btn" onClick={signOut}>
         Sign Out
       </Button>

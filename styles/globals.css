@@ -18,5 +18,8 @@ a {
 }
 
 body {
-  background-color: #88effd;
+  background-color: #98D1E5;
+  background-image: url("https://img.freepik.com/free-vector/green-plant-doodle-frame-vector-with-blank-space_53876-136737.jpg");
+  background-repeat: repeat;
+  background-size: contain;
 }
